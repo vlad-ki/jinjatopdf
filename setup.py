@@ -6,6 +6,9 @@ setup(
     author="Vladimir Kipiani",
     author_email="inweb24.vk@gmail.com",
     packages=find_packages(),
+    install_requires=[
+        'zope.dottedname',
+    ],
 
     entry_points={
         'console_scripts':

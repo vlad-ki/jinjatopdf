@@ -25,8 +25,7 @@ def make_data_from_yaml(yaml_filepath):
         return load(stream)
 
 
-def add_filters(yaml_filepath):
-    data = make_data_from_yaml(yaml_filepath)
+def add_filters(data):
     for filter in data['filters'].keys():
         if isabs(data['filters'][filter]):
             sys_path.append(dirname(data['filters'][filter]))
