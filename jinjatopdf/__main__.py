@@ -11,11 +11,11 @@ def main():
     opts = parse_options()
     data = make_data_from_yaml(opts.yaml)
     context = data['context']
-    costom_filters = parce_filters(data.get('filters', None))
+    filters = parce_filters(data.get('filters', None))
 
     jinja_to_pdf(
         opts.template, opts.pdf, context,
-        costom_filters, opts.service, opts.service_opts
+        filters, opts.service, opts.service_opts
     )
 
 

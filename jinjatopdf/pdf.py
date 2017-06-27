@@ -1,4 +1,4 @@
-from subprocess import Popen, PIPE
+import subprocess
 
 
 def make_pdf_with_wkhtmltopdf(html_filepath, pdf_filepath, serviсe_opts=''):
@@ -8,7 +8,7 @@ def make_pdf_with_wkhtmltopdf(html_filepath, pdf_filepath, serviсe_opts=''):
     if serviсe_opts:
         command.insert(1, serviсe_opts)
 
-    pipe = Popen(command, stdin=PIPE)
+    pipe = subprocess.Popen(command, stdin=subprocess.PIPE)
     pipe.stdin.close()
 
 
@@ -17,5 +17,5 @@ def make_pdf_with_athenapdf(html_filepath, pdf_filepath, serviсe_opts=''):
      arachnysdocker/athenapdf athenapdf {0} {1} {2}'.format(
         serviсe_opts, html_filepath, pdf_filepath)
 
-    pipe = Popen(command, stdin=PIPE, shell=True)
+    pipe = subprocess.Popen(command, stdin=subprocess.PIPE, shell=True)
     pipe.stdin.close()

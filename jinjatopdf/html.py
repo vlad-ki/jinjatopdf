@@ -1,10 +1,7 @@
-from sys import path as sys_path
 from zope.dottedname.resolve import resolve
-from os.path import(
-    isabs,
-    basename,
-    dirname
-)
+from importlib.machinery import SourceFileLoader
+
+import os.path
 
 from jinja2 import Template
 from yaml import load
@@ -25,20 +22,18 @@ def make_data_from_yaml(yaml):
         return load(stream)
 
 
-def parce_filters(costom_filters):
-    if costom_filters is None:
+def parce_filters(filters):
+    if filters is None:
         return None
 
-    for filter in costom_filters.keys():
-        if isabs(costom_filters[filter]):
-            sys_path.append(dirname(costom_filters[filter]))
-            resolve(basename(costom_filters[filter]))
-            costom_filters[filter] = resolve('.'.join((basename(costom_filters[filter]), filter)))
-            sys_path.pop()
+    for filter in filters.keys():
+        if os.path.isabs(filters[filter]):
+            module = SourceFileLoader('module', filters[filter]).load_module()
+            filters[filter] = getattr(module, filter)
         else:
-            costom_filters[filter] = resolve('.'.join((costom_filters[filter], filter)))
+            filters[filter] = resolve('.'.join((filters[filter], filter)))
 
-    return costom_filters
+    return filters
 
 
 def make_template_from_jinja(template):

@@ -1,6 +1,6 @@
-from os import remove
-from time import sleep
-from jinja2 import filters
+import os
+import time
+import jinja2
 from .html import (
     make_template_from_jinja,
     save_html_from_template,
@@ -15,14 +15,14 @@ def jinja_to_pdf(
     template,
     pdf,
     context,
-    costom_filters,
+    filters,
     service='wkhtmltopdf',
     serviсe_opts='',
 ):
 
-    if costom_filters:
-        for filter in costom_filters:
-            filters.FILTERS[filter] = costom_filters[filter]
+    if filters:
+        for filter in filters:
+            jinja2.filters.FILTERS[filter] = filters[filter]
 
     template_obj = make_template_from_jinja(template)
     html = save_html_from_template(template_obj, context, pdf)
@@ -33,5 +33,5 @@ def jinja_to_pdf(
     elif service == 'athenapdf':
         make_pdf_with_athenapdf(html, pdf, serviсe_opts)
 
-    sleep(3)
-    remove(html)
+    time.sleep(3)
+    os.remove(html)
