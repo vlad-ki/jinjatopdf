@@ -46,7 +46,6 @@ If you need to send filters to jinja template - use *filters* key.
 .. code-block:: yaml
 
     filters:
-        filter_function_name: /path/to/module
         filter_function_name: package.module
 
 Quick start
