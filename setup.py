@@ -9,6 +9,6 @@ setup(
 
     entry_points={
         'console_scripts':
-            ['jinjatopdf = jinjatopdf.app:main']
+            ['jinjatopdf = jinjatopdf.__main__:main']
     },
 )
