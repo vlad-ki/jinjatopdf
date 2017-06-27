@@ -6,7 +6,7 @@ from os.path import(
     dirname
 )
 
-from jinja2 import Template, filters
+from jinja2 import Template
 from yaml import load
 
 
@@ -20,32 +20,37 @@ def parse_filepath(filepath):
     return filepath
 
 
-def make_data_from_yaml(yaml_filepath):
-    with open(yaml_filepath) as stream:
+def make_data_from_yaml(yaml):
+    with open(yaml) as stream:
         return load(stream)
 
 
-def add_filters(data):
-    for filter in data['filters'].keys():
-        if isabs(data['filters'][filter]):
-            sys_path.append(dirname(data['filters'][filter]))
-            resolve(basename(data['filters'][filter]))
-            filters.FILTERS[filter] = resolve('.'.join((basename(data['filters'][filter]), filter)))
+def parce_filters(costom_filters):
+    if costom_filters is None:
+        return None
+
+    for filter in costom_filters.keys():
+        if isabs(costom_filters[filter]):
+            sys_path.append(dirname(costom_filters[filter]))
+            resolve(basename(costom_filters[filter]))
+            costom_filters[filter] = resolve('.'.join((basename(costom_filters[filter]), filter)))
             sys_path.pop()
         else:
-            filters.FILTERS[filter] = resolve('.'.join((data['filters'][filter], filter)))
+            costom_filters[filter] = resolve('.'.join((costom_filters[filter], filter)))
+
+    return costom_filters
 
 
-def make_template_from_jinja(template_filepath):
-    template_filepath = parse_filepath(template_filepath)
-    with open(template_filepath) as template_file:
+def make_template_from_jinja(template):
+    template = parse_filepath(template)
+    with open(template) as template_file:
         return Template(template_file.read())
 
 
-def save_html_from_template(template, data, pdf_filepath):
-    html_filepath = pdf_filepath[:pdf_filepath.rfind('.')] + '.html'
-    html_document = template.render(data['context'])
+def save_html_from_template(template_obj, context, pdf):
+    html = pdf[:pdf.rfind('.')] + '.html'
+    html_obj = template_obj.render(context)
 
-    with open(html_filepath, 'w') as html_file:
-        html_file.write(html_document)
-    return html_filepath
+    with open(html, 'w') as html_file:
+        html_file.write(html_obj)
+    return html

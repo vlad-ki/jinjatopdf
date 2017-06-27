@@ -1,5 +1,6 @@
 from os import remove
 from time import sleep
+from jinja2 import filters
 from .html import (
     make_template_from_jinja,
     save_html_from_template,
@@ -9,15 +10,28 @@ from .pdf import (
     make_pdf_with_athenapdf
 )
 
-def make_jinja_to_pdf(template_filepath, pdf_filepath, data, service='wkhtmltopdf', serviсe_opts=''):
-    template = make_template_from_jinja(template_filepath)
-    html_filepath = save_html_from_template(template, data, pdf_filepath)
-    make_pdf_with_wkhtmltopdf(html_filepath, pdf_filepath, serviсe_opts)
+
+def jinja_to_pdf(
+    template,
+    pdf,
+    context,
+    costom_filters,
+    service='wkhtmltopdf',
+    serviсe_opts='',
+):
+
+    if costom_filters:
+        for filter in costom_filters:
+            filters.FILTERS[filter] = costom_filters[filter]
+
+    template_obj = make_template_from_jinja(template)
+    html = save_html_from_template(template_obj, context, pdf)
+    make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
 
     if service == 'wkhtmltopdf':
-        make_pdf_with_wkhtmltopdf(html_filepath, pdf_filepath, serviсe_opts)
+        make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
     elif service == 'athenapdf':
-        make_pdf_with_athenapdf(html_filepath, pdf_filepath, serviсe_opts)
+        make_pdf_with_athenapdf(html, pdf, serviсe_opts)
 
     sleep(3)
-    remove(html_filepath)
+    remove(html)
