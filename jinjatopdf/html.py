@@ -1,7 +1,8 @@
 from zope.dottedname.resolve import resolve
 from importlib.machinery import SourceFileLoader
 
-import os.path
+import os
+# import os.path
 
 import jinja2
 from yaml import load
@@ -42,10 +43,8 @@ def make_template_from_jinja(template):
         return jinja2.Template(template_file.read())
 
 
-def save_html_from_template(template_obj, context, pdf):
-    html = pdf[:pdf.rfind('.')] + '.html'
-    html_obj = template_obj.render(context)
-
-    with open(html, 'w') as html_file:
-        html_file.write(html_obj)
-    return html
+def save_html_from_template(file_obj, template_obj, context, pdf):
+    html_str = template_obj.render(context)
+    file_obj.write(html_str)
+    file_obj.flush()
+    return file_obj.name

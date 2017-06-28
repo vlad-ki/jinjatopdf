@@ -1,17 +1,16 @@
-import os
-import time
+import tempfile
 import jinja2
-from jinjatopdf.html import (
+from .html import (
     make_template_from_jinja,
     save_html_from_template,
 )
-from jinjatopdf.pdf import (
+from .pdf import (
     make_pdf_with_wkhtmltopdf,
     make_pdf_with_athenapdf
 )
 
 
-def jinja_to_pd(
+def jinja_to_pdf(
     template,
     pdf,
     context,
@@ -33,13 +32,12 @@ def jinja_to_pd(
             jinja2.filters.FILTERS[filter] = filters[filter]
 
     template_obj = make_template_from_jinja(template)
-    html = save_html_from_template(template_obj, context, pdf)
-    make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
 
-    if service == 'wkhtmltopdf':
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.html',) as file_obj:
+        html = save_html_from_template(file_obj, template_obj, context, pdf)
         make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
-    elif service == 'athenapdf':
-        make_pdf_with_athenapdf(html, pdf, serviсe_opts)
 
-    time.sleep(3)
-    os.remove(html)
+        if service == 'wkhtmltopdf':
+            make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
+        elif service == 'athenapdf':
+            make_pdf_with_athenapdf(html, pdf, serviсe_opts)
