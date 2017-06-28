@@ -41,3 +41,8 @@ def jinja_to_pdf(
             make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
         elif service == 'athenapdf':
             make_pdf_with_athenapdf(html, pdf, serviсe_opts)
+        else:
+            class ServiceError(ValueError):
+                pass
+
+            raise ServiceError('No such service "{}"'.format(service))

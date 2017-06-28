@@ -1,3 +1,4 @@
+import sys
 from argparse import ArgumentParser
 
 from .html import (
@@ -13,10 +14,13 @@ def main():
     context = data['context']
     filters = parce_filters(data.get('filters', None))
 
-    jinja_to_pdf(
-        opts.template, opts.pdf, context,
-        filters, opts.service, opts.service_opts
-    )
+    try:
+        jinja_to_pdf(
+            opts.template, opts.pdf, context,
+            filters, opts.service, opts.service_opts
+        )
+    except ValueError:
+        sys.stderr.write('\nError! No such service "{}"\n'.format(opts.service))
 
 
 def parse_options():
