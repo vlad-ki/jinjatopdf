@@ -3,7 +3,7 @@ from importlib.machinery import SourceFileLoader
 
 import os.path
 
-from jinja2 import Template
+import jinja2
 from yaml import load
 
 
@@ -39,7 +39,7 @@ def parce_filters(filters):
 def make_template_from_jinja(template):
     template = parse_filepath(template)
     with open(template) as template_file:
-        return Template(template_file.read())
+        return jinja2.Template(template_file.read())
 
 
 def save_html_from_template(template_obj, context, pdf):
