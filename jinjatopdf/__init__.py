@@ -1,17 +1,17 @@
 import os
 import time
 import jinja2
-from .html import (
+from jinjatopdf.html import (
     make_template_from_jinja,
     save_html_from_template,
 )
-from .pdf import (
+from jinjatopdf.pdf import (
     make_pdf_with_wkhtmltopdf,
     make_pdf_with_athenapdf
 )
 
 
-def jinja_to_pdf(
+def jinja_to_pd(
     template,
     pdf,
     context,
@@ -19,7 +19,15 @@ def jinja_to_pdf(
     service='wkhtmltopdf',
     serviсe_opts='',
 ):
+    """
+    The function for convert jinja template to pdf.
+    Args:
+    template - the path to the jinja teplate file
+    pdf - the path, where you want to save result pdf file
+    context - dict with context for jinja template
+    filters - mapping function name to function object for jinfa template filters
 
+    """
     if filters:
         for filter in filters:
             jinja2.filters.FILTERS[filter] = filters[filter]
