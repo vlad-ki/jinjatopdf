@@ -20,7 +20,7 @@ Usage
 -----
 How to send context with .yaml file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If you do not know - what is it yaml file, you can `reed the docs <http://docs.ansible.com/ansible/YAMLSyntax.html>`_
+If you do not know - what is it yaml file, you can `reed the docs <http://yaml.org/>`_
 
 For send simple types - use *context* key.
 
