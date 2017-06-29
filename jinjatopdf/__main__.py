@@ -21,6 +21,7 @@ def main():
         )
     except ValueError:
         sys.stderr.write('\nError! No such service "{}"\n'.format(opts.service))
+        sys.exit(1)
 
 
 def parse_options():

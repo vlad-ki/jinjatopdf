@@ -2,7 +2,6 @@ from zope.dottedname.resolve import resolve
 from importlib.machinery import SourceFileLoader
 
 import os
-# import os.path
 
 import jinja2
 from yaml import load
