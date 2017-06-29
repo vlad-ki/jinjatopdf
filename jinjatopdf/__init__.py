@@ -1,5 +1,6 @@
 import os
 import tempfile
+
 import jinja2
 
 from .html import save_html_from_template, parse_filepath
@@ -17,12 +18,12 @@ def jinja_to_pdf(template: str,
                  service: str='wkhtmltopdf',
                  serviсe_opts: str=''):
     """ The function for convert jinja template to pdf.
+
     Args:
     template - the path to the jinja teplate file
     pdf - the path, where you want to save result pdf file
     context - dict with context for jinja template
     filters - mapping function name to function object for jinfa template filters
-
     """
     template = parse_filepath(template)
     environment = jinja2.Environment(
