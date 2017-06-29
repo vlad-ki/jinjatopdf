@@ -1,8 +1,9 @@
+import os
 import tempfile
 import jinja2
 from .html import (
-    make_template_from_jinja,
     save_html_from_template,
+    parse_filepath,
 )
 from .pdf import (
     make_pdf_with_wkhtmltopdf,
@@ -27,15 +28,20 @@ def jinja_to_pdf(
     filters - mapping function name to function object for jinfa template filters
 
     """
+    template = parse_filepath(template)
+    environment = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(os.path.dirname(template)),
+        autoescape=jinja2.select_autoescape(['html', 'jinja2', 'xml', 'jinja'])
+    )
+
     if filters:
         for filter in filters:
-            jinja2.filters.FILTERS[filter] = filters[filter]
+            environment.filters[filter] = filters[filter]
 
-    template_obj = make_template_from_jinja(template)
+    template_obj = environment.get_template(os.path.basename(template))
 
     with tempfile.NamedTemporaryFile(mode='w', suffix='.html',) as file_obj:
         html = save_html_from_template(file_obj, template_obj, context, pdf)
-        make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
 
         if service == 'wkhtmltopdf':
             make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
