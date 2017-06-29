@@ -1,7 +1,7 @@
 import sys
 from argparse import ArgumentParser
 
-from .__init__ import jinja_to_pdf, BadServiceError
+from . import jinja_to_pdf, BadServiceError
 from .html import make_data_from_yaml, parse_filters
 
 

@@ -1,7 +1,7 @@
-from zope.dottedname.resolve import resolve
+import os
 from importlib.machinery import SourceFileLoader
 
-import os
+from zope.dottedname.resolve import resolve
 
 from yaml import load
 
