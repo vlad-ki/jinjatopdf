@@ -32,8 +32,8 @@ def jinja_to_pdf(template: str,
     )
 
     if filters:
-        for filter in filters:
-            environment.filters[filter] = filters[filter]
+        for name, function in filters.items():
+            environment.filters[name] = function
 
     template_obj = environment.get_template(os.path.basename(template))
 

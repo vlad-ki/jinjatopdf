@@ -27,9 +27,9 @@ def parse_filters(filters):
     for name, func in filters.items():
         if os.path.isabs(func):
             module = SourceFileLoader('module', func).load_module()
-            func = getattr(module, name)
+            filters[name] = getattr(module, name)
         else:
-            func = resolve('.'.join((func, name)))
+            filters[name] = resolve('.'.join((func, name)))
 
     return filters
 
