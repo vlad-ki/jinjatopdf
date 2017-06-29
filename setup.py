@@ -7,6 +7,7 @@ setup(
     author_email="inweb24.vk@gmail.com",
     packages=find_packages(),
     install_requires=[
+        'jinja2',
         'zope.dottedname',
     ],
 
