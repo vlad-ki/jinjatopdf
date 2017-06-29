@@ -8,9 +8,8 @@ from yaml import load
 
 def parse_filepath(filepath):
     if ':' in filepath:
-        module = filepath[:filepath.find(':')]
+        module, path = filepath.split(':', 1)
         filepath_to_module = resolve(module).__file__
-        path = filepath[(filepath.find(':') + 1):]
         filepath = ''.join((filepath_to_module, path))
 
     return filepath
@@ -21,16 +20,16 @@ def make_data_from_yaml(yaml):
         return load(stream)
 
 
-def parce_filters(filters):
+def parse_filters(filters):
     if filters is None:
         return None
 
-    for filter in filters.keys():
-        if os.path.isabs(filters[filter]):
-            module = SourceFileLoader('module', filters[filter]).load_module()
-            filters[filter] = getattr(module, filter)
+    for name, func in filters.items():
+        if os.path.isabs(func):
+            module = SourceFileLoader('module', func).load_module()
+            func = getattr(module, name)
         else:
-            filters[filter] = resolve('.'.join((filters[filter], filter)))
+            func = resolve('.'.join((func, name)))
 
     return filters
 
