@@ -1,25 +1,23 @@
 import tempfile
+
 import jinja2
-from .html import (
-    make_template_from_jinja,
-    save_html_from_template,
-)
-from .pdf import (
-    make_pdf_with_wkhtmltopdf,
-    make_pdf_with_athenapdf
-)
+
+from .html import make_template_from_jinja, save_html_from_template
+from .pdf import make_pdf_with_wkhtmltopdf, make_pdf_with_athenapdf
 
 
-def jinja_to_pdf(
-    template,
-    pdf,
-    context,
-    filters,
-    service='wkhtmltopdf',
-    serviсe_opts='',
-):
-    """
-    The function for convert jinja template to pdf.
+class BadServiceError(ValueError):
+    pass
+
+
+def jinja_to_pdf(template: str,
+                 pdf: str,
+                 context: dict,
+                 filters: dict,
+                 service: str='wkhtmltopdf',
+                 serviсe_opts: str=''):
+    """ The function for convert jinja template to pdf.
+
     Args:
     template - the path to the jinja teplate file
     pdf - the path, where you want to save result pdf file
@@ -42,7 +40,4 @@ def jinja_to_pdf(
         elif service == 'athenapdf':
             make_pdf_with_athenapdf(html, pdf, serviсe_opts)
         else:
-            class ServiceError(ValueError):
-                pass
-
-            raise ServiceError('No such service "{}"'.format(service))
+            raise BadServiceError("No such service '{}'".format(service))
