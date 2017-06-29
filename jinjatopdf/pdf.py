@@ -1,5 +1,4 @@
 import subprocess
-import sys
 
 
 def make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts=''):
@@ -9,12 +8,10 @@ def make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts=''):
     if serviсe_opts:
         command.insert(1, serviсe_opts)
 
-    pipe = subprocess.Popen(command, stdin=subprocess.PIPE)
+    pipe = subprocess.Popen(command)
     returnconde = pipe.wait()
 
-    pipe.stdin.close()
-    if returnconde != 0:
-        sys.exit(returnconde)
+    return returnconde
 
 
 def make_pdf_with_athenapdf(html, pdf, serviсe_opts=''):
@@ -25,5 +22,5 @@ def make_pdf_with_athenapdf(html, pdf, serviсe_opts=''):
     returnconde = pipe.wait()
 
     pipe.stdin.close()
-    if returnconde != 0:
-        sys.exit(returnconde)
+
+    return returnconde
