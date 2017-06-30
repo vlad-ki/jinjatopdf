@@ -41,16 +41,17 @@ def jinja_to_pdf(template: str,
         html = save_html_from_template(file_obj, template_obj, context, pdf)
 
         if service == 'wkhtmltopdf':
-            returncode = make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
+            err, returncode = make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
         elif service == 'athenapdf':
-            returncode = make_pdf_with_athenapdf(html, pdf, serviсe_opts)
+            err, returncode = make_pdf_with_athenapdf(html, pdf, serviсe_opts)
         else:
             raise BadServiceError("No such service '{}'".format(service))
 
-        if returncode != 0:
-            if __name__ == 'jinjatopdf':
-                return returncode
-            else:
+        if __name__ == 'jinjatopdf':
+            return err, returncode
+        else:
+            if returncode != 0:
                 raise ChildProcessError(
-                    'The {} application return none zero code "{}"'.format(service, returncode)
+                    'The {} application return none zero code "{}"'.format(service,
+                                                                           returncode)
                 )

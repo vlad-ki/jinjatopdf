@@ -12,18 +12,20 @@ def main():
     filters = parse_filters(data.get('filters', {}))
 
     try:
-        returncode = jinja_to_pdf(template=opts.template,
-                                  pdf=opts.pdf,
-                                  context=context,
-                                  filters=filters,
-                                  service=opts.service,
-                                  serviсe_opts=opts.service_opts)
+        err, returncode = jinja_to_pdf(template=opts.template,
+                                       pdf=opts.pdf,
+                                       context=context,
+                                       filters=filters,
+                                       service=opts.service,
+                                       serviсe_opts=opts.service_opts)
 
     except BadServiceError:
         sys.stderr.write("\nError! No such service '{}'\n".format(opts.service))
         sys.exit(1)
 
     if returncode != 0:
+        raise ChildProcessError(
+            'The child application return error:\n{}'.format(err))
         sys.exit(1)
 
 
