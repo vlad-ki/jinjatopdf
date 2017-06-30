@@ -42,13 +42,13 @@ def jinja_to_pdf(template: str,
 
     template_obj = environment.get_template(os.path.basename(template))
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.html',) as file_obj:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.html', dir=os.getcwd()) as file_obj:
         html = save_html_from_template(file_obj, template_obj, context, pdf)
 
-        if service == 'wkhtmltopdf':
-            err, returncode = make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
-        elif service == 'athenapdf':
+        if service == 'athenapdf':
             err, returncode = make_pdf_with_athenapdf(html, pdf, serviсe_opts)
+        elif service == 'wkhtmltopdf':
+            err, returncode = make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
         else:
             raise BadServiceError("No such service '{}'".format(service))
 

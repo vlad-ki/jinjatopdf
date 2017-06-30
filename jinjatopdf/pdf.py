@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 
 def make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts=''):
@@ -18,8 +19,9 @@ def make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts=''):
 
 
 def make_pdf_with_athenapdf(html, pdf, serviсe_opts=''):
+    filename = os.path.basename(html)
     command = ('docker run --rm -v $(pwd):/converted/ arachnysdocker/athenapdf '
-               'athenapdf {0} {1} {2}'.format(serviсe_opts, html, pdf))
+               'athenapdf {0} /converted/{1} {2}'.format(serviсe_opts, filename, pdf))
 
     pipe = subprocess.Popen(command,
                             stdin=subprocess.PIPE,
