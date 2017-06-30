@@ -28,6 +28,4 @@ def make_pdf_with_athenapdf(html, pdf, serviсe_opts=''):
                             shell=True)
     returnconde = pipe.wait()
 
-    pipe.stdin.close()
-
     return pipe.stderr.read().decode('utf-8'), returnconde

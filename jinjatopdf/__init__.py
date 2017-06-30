@@ -15,6 +15,7 @@ def jinja_to_pdf(template: str,
                  pdf: str,
                  context: dict,
                  filters: dict,
+                 functions: dict,
                  service: str='wkhtmltopdf',
                  serviсe_opts: str=''):
     """ The function for convert jinja template to pdf.
@@ -35,6 +36,10 @@ def jinja_to_pdf(template: str,
         for name, function in filters.items():
             environment.filters[name] = function
 
+    if functions:
+        for name, function in functions.items():
+            environment.globals[name] = function
+
     template_obj = environment.get_template(os.path.basename(template))
 
     with tempfile.NamedTemporaryFile(mode='w', suffix='.html',) as file_obj:
@@ -47,11 +52,11 @@ def jinja_to_pdf(template: str,
         else:
             raise BadServiceError("No such service '{}'".format(service))
 
-        if __name__ == 'jinjatopdf':
-            return err, returncode
-        else:
-            if returncode != 0:
-                raise ChildProcessError(
-                    'The {} application return none zero code "{}"'.format(service,
-                                                                           returncode)
-                )
+    if __name__ == 'jinjatopdf':
+        return err, returncode
+    else:
+        if returncode != 0:
+            raise ChildProcessError(
+                'The {} application return none zero code "{}"'.format(service,
+                                                                       returncode)
+            )

@@ -10,22 +10,24 @@ def main():
     data = make_data_from_yaml(opts.yaml)
     context = data.get('context', {})
     filters = parse_filters(data.get('filters', {}))
+    functions = parse_filters(data.get('functions', {}))
 
     try:
         err, returncode = jinja_to_pdf(template=opts.template,
                                        pdf=opts.pdf,
                                        context=context,
                                        filters=filters,
+                                       functions=functions,
                                        service=opts.service,
                                        serviсe_opts=opts.service_opts)
 
     except BadServiceError:
-        sys.stderr.write("\nError! No such service '{}'\n".format(opts.service))
+        sys.stderr.write('\nError! No such service "{}"\n'.format(opts.service))
         sys.exit(1)
 
     if returncode != 0:
-        raise ChildProcessError(
-            'The child application return error:\n{}'.format(err))
+        sys.stderr.write(
+            'The child application "{}" return error:\n{}'.format(opts.service, err))
         sys.exit(1)
 
 
