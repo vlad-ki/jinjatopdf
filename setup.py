@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="jinjatopdf",
-    version='0.1',
+    version='0.9',
     author="Vladimir Kipiani",
     author_email="inweb24.vk@gmail.com",
     packages=find_packages(),

@@ -17,7 +17,7 @@ def jinja_to_pdf(template: str,
                  filters: dict,
                  functions: dict,
                  service: str='wkhtmltopdf',
-                 serviсe_opts: str=''):
+                 service_opts: list=[]):
     """ The function for convert jinja template to pdf.
 
     Args:
@@ -46,9 +46,9 @@ def jinja_to_pdf(template: str,
         html = save_html_from_template(file_obj, template_obj, context, pdf)
 
         if service == 'athenapdf':
-            err, returncode = make_pdf_with_athenapdf(html, pdf, serviсe_opts)
+            err, returncode = make_pdf_with_athenapdf(html, pdf, service_opts)
         elif service == 'wkhtmltopdf':
-            err, returncode = make_pdf_with_wkhtmltopdf(html, pdf, serviсe_opts)
+            err, returncode = make_pdf_with_wkhtmltopdf(html, pdf, service_opts)
         else:
             raise BadServiceError("No such service '{}'".format(service))
 

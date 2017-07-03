@@ -12,6 +12,8 @@ def main():
     filters = parse_filters(data.get('filters', {}))
     functions = parse_filters(data.get('functions', {}))
 
+    if not opts.service_opts:
+        opts.service_opts = data.get(opts.service, [])
     try:
         err, returncode = jinja_to_pdf(template=opts.template,
                                        pdf=opts.pdf,
@@ -19,7 +21,7 @@ def main():
                                        filters=filters,
                                        functions=functions,
                                        service=opts.service,
-                                       serviсe_opts=opts.service_opts)
+                                       service_opts=opts.service_opts)
 
     except BadServiceError:
         sys.stderr.write('\nError! No such service "{}"\n'.format(opts.service))
@@ -52,9 +54,8 @@ def parse_options():
         help=("Name of converter service to use."
               " It may be 'wkhtmltopdf' or 'athenapdf'. Default it is 'wkhtmltopdf'"),
     )
-
     parser.add_argument(
-        '-o', '--service-opts', dest='service_opts', type=str, default='',
+        '-o', '--service-opts', dest='service_opts', action='append', default=[],
         help='Main options of service',
     )
 

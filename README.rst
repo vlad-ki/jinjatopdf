@@ -59,6 +59,21 @@ And the same with *functions*.
         function_name: package.module
 
 
+If you want to send for child service a fixed arguments - you can do it very easily with yaml context.
+
+    **Example**
+
+    .. code-block:: yaml
+
+        wkhtmltopdf:
+            - -q
+            - -g
+
+        athenapdf:
+            - --no-portrait
+
+
+
 Quick start
 ~~~~~~~~~~~
 .. code-block:: bash
