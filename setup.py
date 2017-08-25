@@ -15,6 +15,7 @@ setup(
     install_requires=[
         'jinja2',
         'zope.dottedname',
+        'yaml',
     ],
 
     entry_points={
